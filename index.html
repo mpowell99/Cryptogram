@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cryptogram - Mike Powell</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
+</head>
+<body class="bg-slate-200">
+<div x-data="cryptogram()">
+    <div class="flex flex-col items-center justify-center h-screen">
+        <div class="mx-auto w-2xl bg-white p-6 rounded-xl shadow-lg">
+            <div class="text-3xl mb-3">Cryptogram</div>
+
+            <div class="flex flex-wrap gap-1.5 font-mono">
+                <template x-for="(char, index) in cryptifyQuote().split('')">
+                    <div
+                        :class="{
+                            'w-[24px] py-2 text-center': true,
+                            'bg-yellow-100': activeLetter == char,
+                            'bg-green-100': solutions[char],
+                            'bg-slate-100': !solutions[char] && activeLetter != char,
+                        }"
+                        x-text="solutions[char] ? solutions[char] : char"
+                    ></div>
+                </template>
+            </div>
+
+            <div class="mt-4 flex flex-row flex-wrap gap-6 gap-y-3 font-mono text-xl justify-center">
+                <template x-for="(letter, index) in letterMap">
+                    <div
+                        x-show="inCryptifiedQuote(index)"
+                        class="flex flex-row border border-slate-600 rounded cursor-pointer"
+                    >
+                        <div class="w-10 text-center border-r border-slate-600 py-1" x-text="index"></div>
+                        <input
+                            type="text"
+                            x-on:focus="highlightLetter(index)"
+                            class="w-10 text-center rounded-r py-1 focus:outline-0 focus:bg-yellow-100"
+                            x-model="solutions[index]"
+                        />
+                    </div>
+                </template>
+            </div>
+
+            <div class="mt-4" x-text="quote"></div>
+
+            <div class="mt-4" x-text="cryptifyQuote()"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="js/cryptogram.js"></script>
+</body>
+</html>
